@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es-CO">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="listado de tareas para prueba tecnica">
+    <meta name="keywords" content="HTML, CSS, JavaScript">
+    <meta name="author" content="Dairon Montes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ejercicio-02: listado de tareas</title>
+</head>
+<style>
+    * {
+        box-sizing: border-box;
+    }
+    body {
+        font-family: 'Courier New', Courier, monospace;
+        margin: 0;
+        background-color: #f4f4f4;
+    }
+    header {
+        padding: 20px;
+        text-align: center;
+        background: #700ec0;
+        color: white;
+    }
+    .agregar-tarea {
+        display: flex;
+        justify-content: center;
+        margin: 20px;
+        gap: 10px;
+    }
+    .boton {
+        background-color: #0436aa;
+        color: white;
+        font-size: 15px;
+        padding: 12px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        align-self: center;
+    }
+    .boton:hover {
+        background-color: #11017d;
+    }
+    .lista-tareas {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 0;
+    }
+    .tarea {
+        padding: 10px;
+        border-bottom: 1px solid #ccc;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .tarea-texto {
+        flex-grow: 1;
+        margin-right: 10px;
+    }
+    .tarea-botones {
+        display: flex;
+        gap: 5px;
+    }
+    .btn-check, .btn-eliminar {
+        width: 30px;
+        height: 30px;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .btn-check {
+        background-color: #28a745;
+        color: white;
+    }
+    .btn-check:hover {
+        background-color: #218838;
+    }
+    .btn-eliminar {
+        background-color: #dc3545;
+        color: white;
+    }
+    .btn-eliminar:hover {
+        background-color: #c82333;
+    }
+    .tarea-completada {
+        text-decoration: line-through;
+        color: #6c757d;
+        opacity: 0.7;
+    }
+
+</style>
+<body>
+    <header>
+        <h1>Lista de Tareas</h1>
+    </header>
+
+    <div class="agregar-tarea">
+        <input type="text" id="tareaInput" placeholder="Agregar nueva tarea..." style="width: 70%; padding: 10px;"/>
+        <button class="boton" onclick="agregarTarea()">Agregar</button>
+    </div>
+
+    <div class="lista-tareas">
+        <li id="listaDeTareas">Tareas: </li>
+    </div>
+
+    <script>
+        function agregarTarea() {
+            const tareaInput = document.getElementById('tareaInput');
+            const tareaTexto = tareaInput.value.trim();
+            if (tareaTexto === '') return;
+
+            const listaDeTareas = document.getElementById('listaDeTareas');
+            const nuevaTarea = document.createElement('li');
+            nuevaTarea.className = 'tarea';
+
+            // Crear el contenedor del texto
+            const textoSpan = document.createElement('span');
+            textoSpan.className = 'tarea-texto';
+            textoSpan.textContent = tareaTexto;
+
+            // Crear contenedor de botones
+            const botonesDiv = document.createElement('div');
+            botonesDiv.className = 'tarea-botones';
+
+            // Crear botón de check
+            const botonCheck = document.createElement('button');
+            botonCheck.className = 'btn-check';
+            botonCheck.innerHTML = '✓';
+            botonCheck.onclick = function() {
+                textoSpan.classList.toggle('tarea-completada');
+            };
+
+            // Crear botón de eliminar
+            const botonEliminar = document.createElement('button');
+            botonEliminar.className = 'btn-eliminar';
+            botonEliminar.innerHTML = '✗';
+            botonEliminar.onclick = function() {
+                nuevaTarea.remove();
+            };
+
+            // Agregar botones al contenedor
+            botonesDiv.appendChild(botonCheck);
+            botonesDiv.appendChild(botonEliminar);
+
+            // Agregar todo a la tarea
+            nuevaTarea.appendChild(textoSpan);
+            nuevaTarea.appendChild(botonesDiv);
+
+            // Agregar la tarea a la lista
+            listaDeTareas.appendChild(nuevaTarea);
+            tareaInput.value = '';
+        }
+
+        // Permitir agregar tarea con Enter
+        document.getElementById('tareaInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                agregarTarea();
+            }
+        });
+    </script>
+</body>
+</html>
