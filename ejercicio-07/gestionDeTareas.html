@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="es-CO">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Sistema completo de gestión de tareas">
+    <meta name="keywords" content="HTML, CSS, JavaScript">
+    <meta name="author" content="Dairon Montes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Gestión de Tareas</title>
+</head>
+<style>
+    * {
+        box-sizing: border-box;
+    }
+    body {
+        font-family: 'Courier New', Courier, monospace;
+        margin: 0;
+        background-color: #f4f4f4;
+    }
+    header {
+        padding: 20px;
+        text-align: center;
+        background: #700ec0;
+        color: white;
+    }
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+    .seccion {
+        background: white;
+        margin: 20px 0;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .seccion h2 {
+        margin-top: 0;
+        color: #700ec0;
+        border-bottom: 2px solid #700ec0;
+        padding-bottom: 10px;
+    }
+    .form-grupo {
+        margin-bottom: 15px;
+    }
+    .form-grupo label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+    .form-grupo input, .form-grupo textarea, .form-grupo select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-family: inherit;
+    }
+    .form-grupo textarea {
+        resize: vertical;
+        height: 80px;
+    }
+    .boton {
+        background-color: #0436aa;
+        color: white;
+        font-size: 15px;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-right: 10px;
+    }
+    .boton:hover {
+        background-color: #11017d;
+    }
+    .boton.secundario {
+        background-color: #6c757d;
+    }
+    .boton.secundario:hover {
+        background-color: #545b62;
+    }
+    .boton.peligro {
+        background-color: #dc3545;
+    }
+    .boton.peligro:hover {
+        background-color: #c82333;
+    }
+    .filtros {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+    }
+    .tarea {
+        background: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 5px;
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+    .tarea-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    .tarea-id {
+        font-size: 12px;
+        color: #6c757d;
+        background: #e9ecef;
+        padding: 2px 6px;
+        border-radius: 3px;
+    }
+    .tarea-estado {
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: bold;
+    }
+    .estado-pendiente {
+        background-color: #fff3cd;
+        color: #856404;
+    }
+    .estado-en-progreso {
+        background-color: #cce7ff;
+        color: #0c5460;
+    }
+    .estado-completada {
+        background-color: #d4edda;
+        color: #155724;
+    }
+    .tarea-titulo {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 8px;
+        color: #343a40;
+    }
+    .tarea-descripcion {
+        color: #6c757d;
+        margin-bottom: 15px;
+        line-height: 1.5;
+    }
+    .tarea-acciones {
+        display: flex;
+        gap: 10px;
+    }
+    .tarea-acciones button {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+    .contador-tareas {
+        background: #e9ecef;
+        padding: 10px;
+        border-radius: 4px;
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+    }
+    .empty-state {
+        text-align: center;
+        color: #6c757d;
+        padding: 40px;
+    }
+</style>
+<body>
+    <header>
+        <h1>Sistema de Gestión de Tareas</h1>
+    </header>
+
+    <div class="container">
+        <!-- Sección para crear tareas - Permite agregar tareas y su información -->
+        <div class="seccion">
+            <h2>Crear Nueva Tarea</h2>
+            <form id="formCrearTarea">
+                <div class="form-grupo">
+                    <label for="titulo">Título:</label>
+                    <input type="text" id="titulo" required>
+                </div>
+                <div class="form-grupo">
+                    <label for="descripcion">Descripción:</label>
+                    <textarea id="descripcion" required></textarea>
+                </div>
+                <div class="form-grupo">
+                    <label for="estadoInicial">Estado inicial:</label>
+                    <select id="estadoInicial">
+                        <option value="Pendiente">Pendiente</option>
+                        <option value="En progreso">En progreso</option>
+                        <option value="Completada">Completada</option>
+                    </select>
+                </div>
+                <button type="submit" class="boton">Crear Tarea</button>
+            </form>
+        </div>
+
+        <!-- Sección para listar y filtrar tareas - Permite obtener el listado y filtrado de las tareas -->
+        <div class="seccion">
+            <h2>Lista de Tareas</h2>
+            
+            <div class="contador-tareas" id="contadorTareas">
+                <span>Total: <strong id="totalTareas">0</strong></span>
+                <span>Pendientes: <strong id="pendientes">0</strong></span>
+                <span>En progreso: <strong id="enProgreso">0</strong></span>
+                <span>Completadas: <strong id="completadas">0</strong></span>
+            </div>
+
+            <div class="filtros">
+                <button class="boton" onclick="filtrarTareas('todas')">Todas</button>
+                <button class="boton secundario" onclick="filtrarTareas('Pendiente')">Pendientes</button>
+                <button class="boton secundario" onclick="filtrarTareas('En progreso')">En Progreso</button>
+                <button class="boton secundario" onclick="filtrarTareas('Completada')">Completadas</button>
+                <button class="boton" onclick="cargarTareas()">Recargar</button>
+            </div>
+
+            <div id="listaTareas"></div>
+        </div>
+
+        <!-- Sección para actualizar estado - Funciona para buscar una tarea especifica y cambiar su estado -->
+        <div class="seccion">
+            <h2>Actualizar Estado de Tarea</h2>
+            <div class="form-grupo">
+                <label for="tareaId">ID de la tarea:</label>
+                <input type="number" id="tareaId" placeholder="Ingrese el ID">
+            </div>
+            <div class="form-grupo">
+                <label for="nuevoEstado">Nuevo estado:</label>
+                <select id="nuevoEstado">
+                    <option value="Pendiente">Pendiente</option>
+                    <option value="En progreso">En progreso</option>
+                    <option value="Completada">Completada</option>
+                </select>
+            </div>
+            <button class="boton" onclick="actualizarEstado()">Actualizar Estado</button>
+        </div>
+    </div>
+
+    <script>
+        let tareas = [];
+        let filtroActual = 'todas';
+
+        // Cargar tareas al iniciar
+        window.addEventListener('load', cargarTareas);
+
+        // Función para generar ID único
+        function generarId() {
+            return tareas.length > 0 ? Math.max(...tareas.map(t => t.id)) + 1 : 1;
+        }
+
+        // Función para crear nueva tarea
+        function crearTarea(titulo, descripcion, estado = 'Pendiente') {
+            const nuevaTarea = {
+                id: generarId(),
+                titulo: titulo.trim(),
+                descripcion: descripcion.trim(),
+                estado: estado
+            };
+            
+            tareas.push(nuevaTarea);
+            guardarTareas();
+            return nuevaTarea;
+        }
+
+        // Función para cargar tareas desde localStorage
+        function cargarTareas() {
+            const tareasGuardadas = localStorage.getItem('tareas');
+            if (tareasGuardadas) {
+                try {
+                    tareas = JSON.parse(tareasGuardadas);
+                } catch (error) {
+                    console.log('Error al cargar tareas guardadas, iniciando con lista vacía');
+                    tareas = [];
+                }
+            } else {
+                tareas = [];
+            }
+            
+            mostrarTareas();
+            actualizarContadores();
+        }
+
+        // Función para guardar tareas
+        function guardarTareas() {
+            localStorage.setItem('tareas', JSON.stringify(tareas));
+            
+            // Log para mostrar la estructura de datos actual
+            console.log('Tareas guardadas en localStorage:');
+            console.log(JSON.stringify(tareas, null, 2));
+            
+            actualizarContadores();
+        }
+
+        // Función para mostrar tareas
+        function mostrarTareas() {
+            const container = document.getElementById('listaTareas');
+            const tareasFiltradas = filtrarTareasArray();
+
+            if (tareasFiltradas.length === 0) {
+                container.innerHTML = '<div class="empty-state">No hay tareas para mostrar</div>';
+                return;
+            }
+
+            container.innerHTML = tareasFiltradas.map(tarea => `
+                <div class="tarea">
+                    <div class="tarea-header">
+                        <span class="tarea-id">ID: ${tarea.id}</span>
+                        <span class="tarea-estado estado-${tarea.estado.toLowerCase().replace(' ', '-')}">${tarea.estado}</span>
+                    </div>
+                    <div class="tarea-titulo">${tarea.titulo}</div>
+                    <div class="tarea-descripcion">${tarea.descripcion}</div>
+                    <div class="tarea-acciones">
+                        <button class="boton secundario" onclick="cambiarEstado(${tarea.id}, 'Pendiente')">Pendiente</button>
+                        <button class="boton secundario" onclick="cambiarEstado(${tarea.id}, 'En progreso')">En Progreso</button>
+                        <button class="boton secundario" onclick="cambiarEstado(${tarea.id}, 'Completada')">Completada</button>
+                        <button class="boton peligro" onclick="eliminarTarea(${tarea.id})">Eliminar</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Función para filtrar tareas
+        function filtrarTareasArray() {
+            if (filtroActual === 'todas') {
+                return tareas;
+            }
+            // Usar filter() como en ejercicio-05 para filtrar por estado
+            return tareas.filter(tarea => tarea.estado === filtroActual);
+        }
+
+        // Función para aplicar filtro
+        function filtrarTareas(estado) {
+            filtroActual = estado;
+            mostrarTareas();
+            
+            // Actualizar botones de filtro
+            document.querySelectorAll('.filtros button').forEach(btn => {
+                if (!btn.onclick.toString().includes('cargarTareas')) {
+                    btn.className = 'boton secundario';
+                }
+            });
+            event.target.className = 'boton';
+        }
+
+        // Función para cambiar estado
+        function cambiarEstado(id, nuevoEstado) {
+            const tarea = tareas.find(t => t.id === id);
+            if (tarea) {
+                tarea.estado = nuevoEstado;
+                guardarTareas();
+                mostrarTareas();
+            }
+        }
+
+        // Función para actualizar estado por ID
+        function actualizarEstado() {
+            const id = parseInt(document.getElementById('tareaId').value);
+            const nuevoEstado = document.getElementById('nuevoEstado').value;
+            
+            if (isNaN(id)) {
+                alert('Por favor, ingrese un ID válido');
+                return;
+            }
+
+            const tarea = tareas.find(t => t.id === id);
+            if (!tarea) {
+                alert('No se encontró una tarea con ese ID');
+                return;
+            }
+
+            tarea.estado = nuevoEstado;
+            guardarTareas();
+            mostrarTareas();
+            
+            // Limpiar formulario
+            document.getElementById('tareaId').value = '';
+            alert(`Estado actualizado correctamente para la tarea "${tarea.titulo}"`);
+        }
+
+        // Función para eliminar tarea
+        function eliminarTarea(id) {
+            if (confirm('¿Está seguro de que desea eliminar esta tarea?')) {
+                tareas = tareas.filter(t => t.id !== id);
+                guardarTareas();
+                mostrarTareas();
+            }
+        }
+
+        // Función para contar tareas
+        function actualizarContadores() {
+            const pendientes = tareas.filter(t => t.estado === 'Pendiente').length;
+            const enProgreso = tareas.filter(t => t.estado === 'En progreso').length;
+            const completadas = tareas.filter(t => t.estado === 'Completada').length;
+            
+            document.getElementById('totalTareas').textContent = tareas.length;
+            document.getElementById('pendientes').textContent = pendientes;
+            document.getElementById('enProgreso').textContent = enProgreso;
+            document.getElementById('completadas').textContent = completadas;
+        }
+
+        // Manejar envío del formulario - similar a addEventListener en listaDeTareas.html
+        document.getElementById('formCrearTarea').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const titulo = document.getElementById('titulo').value;
+            const descripcion = document.getElementById('descripcion').value;
+            const estado = document.getElementById('estadoInicial').value;
+            
+            if (!titulo.trim() || !descripcion.trim()) {
+                alert('Por favor, complete todos los campos');
+                return;
+            }
+
+            const nuevaTarea = crearTarea(titulo, descripcion, estado);
+            mostrarTareas();
+            
+            // Limpiar formulario
+            this.reset();
+            alert(`Tarea "${nuevaTarea.titulo}" creada con ID: ${nuevaTarea.id}`);
+        });
+    </script>
+</body>
+</html>
