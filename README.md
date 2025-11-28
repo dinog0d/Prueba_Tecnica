@@ -17,3 +17,5 @@ Este repositorio es creado con la finalidad de compartir mi evaluación de la pr
 <p>"- Ejercicio 04: Para realizar este cuarto ejercicio, se tomó en cuenta primero que puede generarse diferentes errores por la dificultad de manejar este formato, por lo que primero al crear la función, se asegura que el formato sea el pedido en el ejercicio. Después de la validación del formato, se realiza la separación de los valores de hora y minuto, para entonces comprobar los condicionales para definir la hora, minuto y prefijo que serían retornados por la función."
 </p>
 
+<p>"- Ejercicio 05: Para realizar este quinto ejercicio, se tomaron los datos entregados y se observó la estructura en la cual estos están presentes, así se crea entonces la función que recibe estos datos y luego los posibles filtros que puede usarse para encontrar los datos buscados. La función entonces, hace primero una validación de los datos, luego una validación de los filtros para finalmente retornar los datos que cumplan con las condiciones de filtrado."
+</p>
