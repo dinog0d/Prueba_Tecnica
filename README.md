@@ -28,3 +28,6 @@ Este repositorio es creado con la finalidad de compartir mi evaluación de la pr
 
 <p>"- Ejercicio 08: Para realizar este octavo ejercicio, dado que es una simulación de un caso posible en el momento de estar realizando las prácticas, para mi es importante haber pensado en toda mi experiencia previa trabajando en equipo, y además, realicé una búsqueda rápida de información relevante a tomar en cuenta en el momento de dirigir un proyecto el cómo mantener una buena comunicación, así encontré la guía de commits convencionales y pude realizar una reflexión de cómo tener buenas prácticas en un trabajo en equipo en un nuevo ambiente."
 </p>
+
+<p>"- Ejercicio 09: Para realizar este noveno ejercicio, hasta el momento el que más presento un reto para mí, ya que, aunque he trabajo vue.js anteriormente en clases, necesité hacer mayor búsqueda de información en documentación y uso de IA para lograr el funcionamiento deseado para la búsqueda y filtrado, usando datos de ejemplo y siguiendo la misma plantilla usada en los diferentes ejercicios, conectando la sección del HTML con el framework de vue.js. Creando entonces los computed properties que permiten realizar primero la búsqueda de los datos, para luego mostrar los que cumplan con la condición."
+</p>
