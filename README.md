@@ -11,5 +11,9 @@ Este repositorio es creado con la finalidad de compartir mi evaluación de la pr
 - Cada tarea es un segmento en sí, que anida el nombre de la tarea y otro segmento que anida a su vez los botones de eliminar y de tarea completada."
 </p>
 
-<p>"- Ejercicio 03: Para realizar este ejercicio, como se mencionan los datos especificos a usar y que el resultado se obtenia por consola, realicé un archivo .js en el cual cree dos funciones, una para encontrar los promedios de las notas y otro que haría la transformación de los datos usando la misma función de promedios, para finalmente aplicar esta función sobre los datos y usando console.log para mostrar los resultados de la transformación."
+<p>"- Ejercicio 03: Para realizar este tercer ejercicio, como se mencionan los datos especificos a usar y que el resultado se obtenia por consola, realicé un archivo .js en el cual cree dos funciones, una para encontrar los promedios de las notas y otro que haría la transformación de los datos usando la misma función de promedios, para finalmente aplicar esta función sobre los datos y usando console.log para mostrar los resultados de la transformación."
 </p>
+
+<p>"- Ejercicio 04: Para realizar este cuarto ejercicio, se tomó en cuenta primero que puede generarse diferentes errores por la dificultad de manejar este formato, por lo que primero al crear la función, se asegura que el formato sea el pedido en el ejercicio. Después de la validación del formato, se realiza la separación de los valores de hora y minuto, para entonces comprobar los condicionales para definir la hora, minuto y prefijo que serían retornados por la función."
+</p>
+
